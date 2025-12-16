@@ -7,19 +7,30 @@ let registrationData = null;
 // Flutterwave API Keys - BOTH IN TEST MODE
 const FLUTTERWAVE_KEY_1 = 'FLWPUBK_TEST-3804d4406c9295d35d6b7ce0d23365fb-X'; // First TEST account
 const FLUTTERWAVE_KEY_2 = 'FLWPUBK_TEST-3753c9c6b091185310572db345cc8211-X'; // Second TEST account
+
 // ==================== INITIALIZE PAGE ====================
 document.addEventListener('DOMContentLoaded', function() {
-    // Load registration data from localStorage
-    registrationData = JSON.parse(localStorage.getItem('registrationData'));
+    console.log('Payment page loaded');
     
-    if (!registrationData) {
+    // Load registration data from localStorage
+    try {
+        const storedData = localStorage.getItem('registrationData');
+        if (!storedData) {
+            throw new Error('No registration data found');
+        }
+        
+        registrationData = JSON.parse(storedData);
+        console.log('Registration data loaded:', registrationData);
+        
+        // Display order summary
+        updateOrderSummary();
+        
+    } catch (error) {
+        console.error('Error loading registration data:', error);
         alert('No registration data found. Please register first.');
         window.location.href = 'index.html';
         return;
     }
-    
-    // Display order summary
-    updateOrderSummary();
 });
 
 // ==================== UPDATE ORDER SUMMARY ====================
@@ -103,7 +114,7 @@ function updatePaymentDetails() {
 
 // ==================== PROCESS PAYMENT ====================
 function processPayment() {
-    console.log('Process payment called');
+    console.log('Process payment called. Selected method:', selectedPaymentMethod);
     
     // Validate selection
     if (!selectedPaymentMethod) {
@@ -118,6 +129,7 @@ function processPayment() {
     
     // Generate a unique payment reference
     const paymentReference = 'GPA-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    console.log('Generated payment reference:', paymentReference);
     
     // Update registration data with payment info
     registrationData.paymentReference = paymentReference;
@@ -150,15 +162,29 @@ function processFlutterwavePayment() {
             logo: 'https://img.icons8.com/color/96/000000/graduation-cap.png',
         },
         callback: function(response) {
-            console.log('Flutterwave callback:', response);
+            console.log('Full Flutterwave callback response:', response);
             
-            if (response.status === 'successful') {
-                // Payment successful
+            // FIXED: Check for multiple possible success statuses
+            const successStatuses = ['successful', 'APPROVED', 'Approved. Successful', 'success'];
+            const isSuccessful = successStatuses.includes(response.status);
+            
+            if (isSuccessful) {
+                console.log('✅ Payment successful! Transaction ID:', response.transaction_id);
+                
+                // Payment successful - update registration data
                 registrationData.flutterwaveTransactionId = response.transaction_id;
                 registrationData.paymentStatus = 'completed';
+                registrationData.actualStatus = response.status; // Store actual status for debugging
+                
+                // Generate GPA Code ONLY after successful payment
+                registrationData.gpaCode = generateGPACode();
+                console.log('Generated GPA Code:', registrationData.gpaCode);
+                
+                // Complete the registration process
                 completeRegistration();
             } else {
-                alert('❌ Payment was not successful. Please try again.');
+                console.log('❌ Payment failed. Status:', response.status, 'Message:', response.message);
+                alert(`❌ Payment was not successful.\nStatus: ${response.status}\nMessage: ${response.message || 'No error message'}`);
             }
         },
         onclose: function() {
@@ -169,17 +195,16 @@ function processFlutterwavePayment() {
 
 // ==================== COMPLETE REGISTRATION ====================
 function completeRegistration() {
-    console.log('Completing registration...');
-    
-    // Generate GPA Code (only after successful payment)
-    const gpaCode = generateGPACode();
+    console.log('Completing registration with data:', registrationData);
     
     // Prepare final data for Google Sheets
     const finalData = {
         ...registrationData,
-        gpaCode: gpaCode,
+        gpaCode: registrationData.gpaCode,
         timestamp: new Date().toISOString()
     };
+    
+    console.log('Sending to Google Sheets:', finalData);
     
     // Save to Google Sheets via Apps Script
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbwpEH5v62e8eGYTreXKfXsB6SsMF1aJJn3ha0mg2IOtrO4CKSF1ZUHgCI4sCX9JLrom/exec';
@@ -193,33 +218,42 @@ function completeRegistration() {
         body: JSON.stringify(finalData)
     })
     .then(() => {
-        console.log('Data sent to Google Sheets');
+        console.log('✅ Data sent to Google Sheets');
         
         // Save success data and redirect
         localStorage.setItem('registrationSuccess', JSON.stringify({
             success: true,
-            gpaCode: gpaCode,
+            gpaCode: registrationData.gpaCode,
             data: registrationData,
-            paymentStatus: 'completed'
+            paymentStatus: 'completed',
+            transactionId: registrationData.flutterwaveTransactionId
         }));
         
         // Clear old registration data
         localStorage.removeItem('registrationData');
         
+        console.log('Redirecting to success page...');
+        
         // Redirect to success page
         window.location.href = 'success.html';
     })
     .catch((error) => {
-        console.error('Error saving to Google Sheets:', error);
+        console.error('❌ Error saving to Google Sheets:', error);
         
         // Still show success to user even if Google Sheets fails
         localStorage.setItem('registrationSuccess', JSON.stringify({
             success: true,
-            gpaCode: gpaCode,
+            gpaCode: registrationData.gpaCode,
             data: registrationData,
             paymentStatus: 'completed',
-            note: 'Please contact admin if you don\'t receive confirmation'
+            transactionId: registrationData.flutterwaveTransactionId,
+            note: 'Please contact admin if you don\'t receive confirmation (Sheet save error)'
         }));
+        
+        alert('✅ Payment successful! However, there was an issue saving your record. Please note your GPA Code: ' + registrationData.gpaCode);
+        
+        // Clear old registration data
+        localStorage.removeItem('registrationData');
         
         window.location.href = 'success.html';
     });
@@ -232,16 +266,38 @@ function generateGPACode() {
     return `GPA-${timestamp}${random}`;
 }
 
-// ==================== DEBUGGING ====================
-// Add this to check if localStorage has data
-function debugLocalStorage() {
-    console.log('LocalStorage registrationData:', localStorage.getItem('registrationData'));
-    console.log('Parsed registrationData:', registrationData);
+// ==================== TEST UTILITIES ====================
+// You can run these in browser console for testing
+
+function testWithSampleData() {
+    // Create test registration data
+    const testData = {
+        name: 'John Test',
+        email: 'john.test@example.com',
+        phone: '08012345678',
+        department: 'Computer Science',
+        matricNumber: '20/CS/001',
+        courses: ['PHY 101', 'CHE 101'],
+        amount: 400
+    };
+    
+    localStorage.setItem('registrationData', JSON.stringify(testData));
+    console.log('Test data loaded. Refresh page to see it.');
+    location.reload();
 }
 
-// Call debug on page load for troubleshooting
-setTimeout(debugLocalStorage, 1000);
+function clearTestData() {
+    localStorage.removeItem('registrationData');
+    localStorage.removeItem('registrationSuccess');
+    console.log('All test data cleared.');
+    location.reload();
+}
 
-
-
-
+// Auto-run debug info on page load
+setTimeout(function() {
+    console.log('=== GENIUS POINT ACADEMY DEBUG INFO ===');
+    console.log('registrationData:', registrationData);
+    console.log('selectedPaymentMethod:', selectedPaymentMethod);
+    console.log('selectedFlutterwaveKey:', selectedFlutterwaveKey ? selectedFlutterwaveKey.substring(0, 20) + '...' : 'Not selected');
+    console.log('=======================================');
+}, 1000);
