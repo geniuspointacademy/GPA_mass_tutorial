@@ -4,13 +4,14 @@ let selectedAccountName = '';
 let selectedFlutterwaveKey = '';
 let registrationData = null;
 
-// Flutterwave API Keys - SWITCH TO LIVE MODE
+// ========== LIVE FLUTTERWAVE KEYS ==========
+// Replace with your SINGLE live key for both options
 const FLUTTERWAVE_KEY_1 = 'FLWPUBK-ecb42c20330fa61e3768ae1bdba3e657-X';
-const FLUTTERWAVE_KEY_2 = 'FLWPUBK-ecb42c20330fa61e3768ae1bdba3e657-X';
+const FLUTTERWAVE_KEY_2 = 'FLWPUBK-ecb42c20330fa61e3768ae1bdba3e657-X'; // Same key for both
 
 // ==================== INITIALIZE PAGE ====================
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Payment page loaded');
+    console.log('🎓 Genius Point Academy Payment Page Loaded');
     
     // Load registration data from localStorage
     try {
@@ -20,13 +21,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         registrationData = JSON.parse(storedData);
-        console.log('Registration data loaded:', registrationData);
+        console.log('✅ Registration data loaded:', registrationData);
         
         // Display order summary
         updateOrderSummary();
         
     } catch (error) {
-        console.error('Error loading registration data:', error);
+        console.error('❌ Error loading registration data:', error);
         alert('No registration data found. Please register first.');
         window.location.href = 'index.html';
         return;
@@ -72,11 +73,11 @@ function selectPaymentMethod(method) {
     if (method === 'flutterwave1') {
         document.getElementById('paymentMethod1').classList.add('selected');
         selectedFlutterwaveKey = FLUTTERWAVE_KEY_1;
-        selectedAccountName = 'YAKUB ABIDEEN (Account 1)';
+        selectedAccountName = 'YAKUB ABIDEEN'; // Correct beneficiary name
     } else if (method === 'flutterwave2') {
         document.getElementById('paymentMethod2').classList.add('selected');
         selectedFlutterwaveKey = FLUTTERWAVE_KEY_2;
-        selectedAccountName = 'YAKUB ABIDEEN (Account 2)';
+        selectedAccountName = 'YAKUB ABIDEEN'; // Correct beneficiary name
     }
     
     // Enable the payment button
@@ -99,7 +100,7 @@ function updatePaymentDetails() {
         <div style="margin: 20px 0; padding: 20px; background: #f8f9fa; border-radius: 5px;">
             <h3>✅ ${selectedPaymentMethod === 'flutterwave1' ? 'Online Payment 1' : 'Online Payment 2'}</h3>
             <p>You will be redirected to a secure Flutterwave payment page.</p>
-            <p><strong>Account Name:</strong> ${selectedAccountName}</p>
+            <p><strong>Beneficiary Name:</strong> ${selectedAccountName}</p>
             <p><strong>Amount to Pay:</strong> ₦${registrationData.amount || 0}</p>
             <p><strong>Accepted Methods:</strong> Card, Bank Transfer, USSD, Mobile Money</p>
             
@@ -266,34 +267,7 @@ function generateGPACode() {
     return `GPA-${timestamp}${random}`;
 }
 
-// ==================== TEST UTILITIES ====================
-// You can run these in browser console for testing
-
-function testWithSampleData() {
-    // Create test registration data
-    const testData = {
-        name: 'John Test',
-        email: 'john.test@example.com',
-        phone: '08012345678',
-        department: 'Computer Science',
-        matricNumber: '20/CS/001',
-        courses: ['PHY 101', 'CHE 101'],
-        amount: 400
-    };
-    
-    localStorage.setItem('registrationData', JSON.stringify(testData));
-    console.log('Test data loaded. Refresh page to see it.');
-    location.reload();
-}
-
-function clearTestData() {
-    localStorage.removeItem('registrationData');
-    localStorage.removeItem('registrationSuccess');
-    console.log('All test data cleared.');
-    location.reload();
-}
-
-// Auto-run debug info on page load
+// ==================== DEBUGGING ====================
 setTimeout(function() {
     console.log('=== GENIUS POINT ACADEMY DEBUG INFO ===');
     console.log('registrationData:', registrationData);
@@ -301,4 +275,3 @@ setTimeout(function() {
     console.log('selectedFlutterwaveKey:', selectedFlutterwaveKey ? selectedFlutterwaveKey.substring(0, 20) + '...' : 'Not selected');
     console.log('=======================================');
 }, 1000);
-
