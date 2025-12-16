@@ -4,9 +4,9 @@ let selectedAccountName = '';
 let selectedFlutterwaveKey = '';
 let registrationData = null;
 
-// Flutterwave API Keys - BOTH IN TEST MODE
-const FLUTTERWAVE_KEY_1 = 'FLWPUBK_TEST-3804d4406c9295d35d6b7ce0d23365fb-X'; // First TEST account
-const FLUTTERWAVE_KEY_2 = 'FLWPUBK_TEST-3753c9c6b091185310572db345cc8211-X'; // Second TEST account
+// Flutterwave API Keys - SWITCH TO LIVE MODE
+const FLUTTERWAVE_KEY_1 = 'FLWPUBK-ecb42c20330fa61e3768ae1bdba3e657-X';
+const FLUTTERWAVE_KEY_2 = 'FLWPUBK-ecb42c20330fa61e3768ae1bdba3e657-X';
 
 // ==================== INITIALIZE PAGE ====================
 document.addEventListener('DOMContentLoaded', function() {
@@ -301,3 +301,4 @@ setTimeout(function() {
     console.log('selectedFlutterwaveKey:', selectedFlutterwaveKey ? selectedFlutterwaveKey.substring(0, 20) + '...' : 'Not selected');
     console.log('=======================================');
 }, 1000);
+
