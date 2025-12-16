@@ -26,34 +26,32 @@
 
                 <h3>Select Payment Method</h3>
                 <div class="payment-methods">
-    <!-- Online Payment 1 -->
-    <div class="payment-method" onclick="selectPaymentMethod('flutterwave1')" id="paymentMethod1">
-        <div class="payment-method-icon" style="color: #F5A623;">₦</div>
-        <h4>Online Payment 1</h4>
-        <p>Card/Transfer/USSD</p>
-        <div class="accepted-cards">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Verve_%28card%29.png" alt="Verve">
-        </div>
-    </div>
-    
-    <!-- Online Payment 2 -->
-    <div class="payment-method" onclick="selectPaymentMethod('flutterwave2')" id="paymentMethod2">
-        <div class="payment-method-icon" style="color: #27ae60;">₦</div>
-        <h4>Online Payment 2</h4>
-        <p>Card/Transfer/USSD</p>
-        <div class="accepted-cards">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Verve_%28card%29.png" alt="Verve">
-        </div>
-    </div>
-</div>
+                    <!-- Online Payment 1 - First Flutterwave Account -->
+                    <div class="payment-method" onclick="selectPaymentMethod('flutterwave1')" id="paymentMethod1">
+                        <div style="font-size: 2em; color: #F5A623;">₦</div>
+                        <h4>Online Payment 1</h4>
+                        <p>Card/Transfer/USSD</p>
+                    </div>
+                    
+                    <!-- Online Payment 2 - Second Flutterwave Account -->
+                    <div class="payment-method" onclick="selectPaymentMethod('flutterwave2')" id="paymentMethod2">
+                        <div style="font-size: 2em; color: #27ae60;">₦</div>
+                        <h4>Online Payment 2</h4>
+                        <p>Card/Transfer/USSD</p>
+                    </div>
+                </div>
+
+                <div id="paymentDetails">
+                    <!-- Payment details will appear here -->
+                </div>
+
+                <!-- REMOVED: Bank Transfer Instructions (since you don't want manual transfer) -->
+
+                <button id="payButton" class="btn-primary" onclick="processPayment()" disabled>Complete Payment</button>
+                <button class="btn-secondary" onclick="window.history.back()" style="width: 100%; margin-top: 10px; padding: 10px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer;">Go Back</button>
+            </div>
         </main>
     </div>
     <script src="payment.js"></script>
 </body>
 </html>
-
-
