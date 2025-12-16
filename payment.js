@@ -1,6 +1,6 @@
-let selectedPaymentMethod = '';
+let selectedPaymentMethod = 'flutterwave'; // Set default to flutterwave
 let registrationData = null;
-const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK_TEST-3753c9c6b091185310572db345cc8211-X';
+const FLUTTERWAVE_PUBLIC_KEY = 'FLWPUBK_TEST-3804d4406c9295d35d6b7ce0d23365fb-X';
 
 // Initialize payment page
 document.addEventListener('DOMContentLoaded', function() {
@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     updateOrderSummary();
+    // Automatically select flutterwave as the only option
+    document.querySelector('.payment-method').classList.add('selected');
+    document.getElementById('payButton').disabled = false;
 });
 
 function updateOrderSummary() {
@@ -29,8 +32,6 @@ function updateOrderSummary() {
             <p><strong>Total Amount:</strong> ₦${registrationData.amount}</p>
         </div>
     `;
-    
-    document.getElementById('transferAmount').textContent = `₦${registrationData.amount}`;
 }
 
 function selectPaymentMethod(method) {
@@ -43,29 +44,6 @@ function selectPaymentMethod(method) {
     event.currentTarget.classList.add('selected');
     
     document.getElementById('payButton').disabled = false;
-    
-    // Show appropriate payment details
-    const paymentDetails = document.getElementById('paymentDetails');
-    const transferInstructions = document.getElementById('transferInstructions');
-    
-    if (method === 'flutterwave') {
-        paymentDetails.innerHTML = `
-            <div style="margin: 20px 0;">
-                <h3>Online Payment</h3>
-                <p>You will be redirected to a secure payment page to complete your transaction via Flutterwave.</p>
-                <p><strong>Accepted Methods:</strong> Card, Bank Transfer, USSD, Mobile Money</p>
-            </div>
-        `;
-        transferInstructions.style.display = 'none';
-    } else if (method === 'transfer') {
-        paymentDetails.innerHTML = `
-            <div style="margin: 20px 0;">
-                <h3>Manual Bank Transfer</h3>
-                <p>Please transfer the exact amount to the account details below.</p>
-            </div>
-        `;
-        transferInstructions.style.display = 'block';
-    }
 }
 
 function processPayment() {
@@ -74,11 +52,7 @@ function processPayment() {
         return;
     }
     
-    if (selectedPaymentMethod === 'flutterwave') {
-        processFlutterwavePayment();
-    } else if (selectedPaymentMethod === 'transfer') {
-        processBankTransfer();
-    }
+    processFlutterwavePayment();
 }
 
 function processFlutterwavePayment() {
@@ -106,6 +80,7 @@ function processFlutterwavePayment() {
                 registrationData.paymentMethod = 'flutterwave';
                 registrationData.flutterwaveTransactionId = response.transaction_id;
                 registrationData.paymentStatus = 'completed';
+                registrationData.accountName = 'YAKUB ABIDEEN';
                 completeRegistration();
             } else {
                 alert('Payment was not successful. Please try again.');
@@ -118,48 +93,47 @@ function processFlutterwavePayment() {
     });
 }
 
-function processBankTransfer() {
-    registrationData.paymentMethod = 'bank_transfer';
-    registrationData.paymentReference = 'BANK-' + Math.floor((Math.random() * 1000000000) + 1);
-    registrationData.paymentStatus = 'pending';
-    
-    // For bank transfer, we'll mark as pending verification
-    completeRegistration();
-}
-
 function completeRegistration() {
-    // Send data to server
-    fetch('/api/register', {
+    // Generate GPA code (only after successful payment)
+    const gpaCode = generateGPACode();
+    registrationData.gpaCode = gpaCode;
+    
+    // Send data to Google Apps Script
+    fetch('https://script.google.com/macros/s/AKfycbwpEH5v62e8eGYTreXKfXsB6SsMF1aJJn3ha0mg2IOtrO4CKSF1ZUHgCI4sCX9JLrom/exec', {
         method: 'POST',
+        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(registrationData)
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            localStorage.setItem('registrationSuccess', JSON.stringify({
-                success: true,
-                gpaCode: data.gpaCode,
-                data: registrationData,
-                paymentStatus: registrationData.paymentStatus
-            }));
-            window.location.href = 'success.html';
-        } else {
-            alert('Registration failed: ' + data.message);
-        }
+    .then(() => {
+        // Success - redirect to success page
+        localStorage.setItem('registrationSuccess', JSON.stringify({
+            success: true,
+            gpaCode: gpaCode,
+            data: registrationData
+        }));
+        
+        // Clear registration data
+        localStorage.removeItem('registrationData');
+        
+        window.location.href = 'success.html';
     })
     .catch(error => {
         console.error('Error:', error);
-        // For demo purposes, redirect to success page even if server is down
-        const demoGpaCode = 'GPA-' + Math.floor((Math.random() * 1000) + 1).toString().padStart(3, '0');
+        // Still redirect to success page even if Google Sheets fails
         localStorage.setItem('registrationSuccess', JSON.stringify({
             success: true,
-            gpaCode: demoGpaCode,
-            data: registrationData,
-            paymentStatus: registrationData.paymentStatus || 'completed'
+            gpaCode: gpaCode,
+            data: registrationData
         }));
         window.location.href = 'success.html';
     });
+}
+
+function generateGPACode() {
+    const timestamp = Date.now().toString().slice(-8);
+    const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+    return `GPA-${timestamp}${random}`;
 }
