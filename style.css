@@ -133,25 +133,23 @@ input:focus, select:focus {
 }
 
 .payment-methods {
-    display: flex;
-    justify-content: space-around;
+    text-align: center;
     margin: 20px 0;
 }
 
 .payment-method {
-    padding: 15px;
-    border: 2px solid #ddd;
+    display: inline-block;
+    padding: 20px;
+    border: 2px solid #3498db;
     border-radius: 5px;
-    cursor: pointer;
     text-align: center;
-    flex: 1;
-    margin: 0 10px;
-    transition: all 0.3s;
+    background: #ebf5fb;
+    max-width: 300px;
+    cursor: default; /* Not clickable since it's the only option */
 }
 
-.payment-method.selected {
-    border-color: #3498db;
-    background: #ebf5fb;
+#transferInstructions {
+    display: none; /* Hide bank transfer instructions */
 }
 
 .payment-method img {
@@ -159,7 +157,18 @@ input:focus, select:focus {
     height: 40px;
     object-fit: contain;
 }
+.accepted-cards {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
 
+.accepted-cards img {
+    max-width: 50px;
+    height: 30px;
+    object-fit: contain;
+}
 .success-container {
     text-align: center;
     background: white;
@@ -208,4 +217,5 @@ input:focus, select:focus {
 .btn-secondary:hover {
     background: #7f8c8d !important;
 }
+
 }
