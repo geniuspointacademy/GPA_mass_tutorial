@@ -13,11 +13,11 @@ function selectPaymentMethod(method) {
     if (method === 'flutterwave1') {
         document.getElementById('paymentMethod1').classList.add('selected');
         selectedFlutterwaveKey = 'FLWPUBK_TEST-3804d4406c9295d35d6b7ce0d23365fb-X'; // First account
-        selectedAccountName = 'YAKUB ABIDEEN';
+        selectedAccountName = 'GENIUS POINT - SAMSON';
     } else if (method === 'flutterwave2') {
         document.getElementById('paymentMethod2').classList.add('selected');
         selectedFlutterwaveKey = 'FLWPUBK_TEST-3753c9c6b091185310572db345cc8211-X'; // Second account
-        selectedAccountName = 'YAKUB ABIDEEN'; // Change if different name
+        selectedAccountName = 'YAKUB ABIDEEN-GENIUS POINT'; // Change if different name
     }
     
     // Enable payment button
@@ -80,3 +80,4 @@ function processFlutterwavePayment() {
         }
     });
 }
+
