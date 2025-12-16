@@ -6,7 +6,7 @@ let registrationData = null;
 
 // Flutterwave API Keys
 const FLUTTERWAVE_KEY_1 = 'FLWPUBK_TEST-3804d4406c9295d35d6b7ce0d23365fb-X'; // First account
-const FLUTTERWAVE_KEY_1 = 'FLWPUBK-ecb42c20330fa61e3768ae1bdba3e657-X';
+const FLUTTERWAVE_KEY_2 = 'FLWPUBK-ecb42c20330fa61e3768ae1bdba3e657-X';
 // ==================== INITIALIZE PAGE ====================
 document.addEventListener('DOMContentLoaded', function() {
     // Load registration data from localStorage
@@ -241,4 +241,5 @@ function debugLocalStorage() {
 
 // Call debug on page load for troubleshooting
 setTimeout(debugLocalStorage, 1000);
+
 
