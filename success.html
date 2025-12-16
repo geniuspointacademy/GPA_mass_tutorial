@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful - Genius Point Academy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Genius Point Academy</h1>
+                <p>Registration Successful</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="success-container">
+                <div class="success-icon">✓</div>
+                <h2>Registration Successful!</h2>
+                <p>Thank you for registering for our mass tutorials.</p>
+                
+                <div id="successDetails">
+                    <!-- Success details will be populated by JavaScript -->
+                </div>
+                
+                <div style="margin-top: 30px;">
+                    <p>You will receive further instructions via WhatsApp.</p>
+                    <button class="btn-primary" onclick="goHome()">Register Another Student</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successData = JSON.parse(localStorage.getItem('registrationSuccess'));
+            
+            if (successData && successData.success) {
+                const successDetails = document.getElementById('successDetails');
+                successDetails.innerHTML = `
+                    <div class="gpa-code">${successData.gpaCode}</div>
+                    <p><strong>Keep this code safe! It's your registration ID.</strong></p>
+                    <div style="text-align: left; background: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                        <p><strong>Name:</strong> ${successData.data.name}</p>
+                        <p><strong>Matric Number:</strong> ${successData.data.matricNumber}</p>
+                        <p><strong>Courses:</strong> ${successData.data.courses.join(', ')}</p>
+                        <p><strong>Amount Paid:</strong> ₦${successData.data.amount}</p>
+                        <p><strong>Payment Method:</strong> ${successData.data.paymentMethod}</p>
+                    </div>
+                `;
+                
+                // Clear storage except for demo purposes
+                localStorage.removeItem('registrationData');
+            } else {
+                alert('No success data found');
+                window.location.href = 'index.html';
+            }
+        });
+        
+        function goHome() {
+            localStorage.removeItem('registrationSuccess');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

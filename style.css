@@ -1,0 +1,211 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.logo h1 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.logo p {
+    color: #7f8c8d;
+    font-size: 1.1em;
+}
+
+.registration-form {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.registration-form h2 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.price-info {
+    text-align: center;
+    color: #e74c3c;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.course-selection {
+    margin: 20px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    display: none;
+}
+
+.course-option {
+    margin-bottom: 10px;
+}
+
+.course-option select {
+    background: white;
+}
+
+.amount-display {
+    text-align: center;
+    margin: 30px 0;
+    padding: 20px;
+    background: #ecf0f1;
+    border-radius: 5px;
+}
+
+.amount-display h3 {
+    color: #2c3e50;
+}
+
+#totalAmount {
+    color: #e74c3c;
+    font-size: 1.5em;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 15px;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+}
+
+.payment-methods {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.payment-method {
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    flex: 1;
+    margin: 0 10px;
+    transition: all 0.3s;
+}
+
+.payment-method.selected {
+    border-color: #3498db;
+    background: #ebf5fb;
+}
+
+.payment-method img {
+    max-width: 100px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.success-container {
+    text-align: center;
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.success-icon {
+    font-size: 4em;
+    color: #27ae60;
+    margin-bottom: 20px;
+}
+
+.gpa-code {
+    background: #2c3e50;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 20px 0;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    .registration-form {
+        padding: 20px;
+    }
+    
+    .payment-methods {
+        flex-direction: column;
+    }
+    
+    .payment-method {
+        margin: 5px 0;
+    }
+.btn-secondary {
+    background: #95a5a6 !important;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d !important;
+}
+}

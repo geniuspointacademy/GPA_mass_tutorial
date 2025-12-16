@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Genius Point Academy</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Genius Point Academy</h1>
+                <p>Complete Your Payment</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="registration-form">
+                <h2>Payment Details</h2>
+                
+                <div id="orderSummary">
+                    <!-- Order summary will be populated by JavaScript -->
+                </div>
+
+                <h3>Select Payment Method</h3>
+                <div class="payment-methods">
+                    <div class="payment-method" onclick="selectPaymentMethod('flutterwave')">
+                        <div style="font-size: 2em; color: #F5A623;">₦</div>
+                        <h4>Online Payment</h4>
+                        <p>Card/Transfer/USSD</p>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('transfer')">
+                        <div style="font-size: 2em; color: #27ae60;">₦</div>
+                        <h4>Manual Transfer</h4>
+                        <p>Bank Transfer</p>
+                    </div>
+                </div>
+
+                <div id="paymentDetails">
+                    <!-- Payment details will appear here -->
+                </div>
+
+                <div id="transferInstructions" style="display: none; background: #f8f9fa; padding: 20px; border-radius: 5px; margin: 20px 0;">
+                    <h3>Bank Transfer Details</h3>
+                    <p><strong>Bank Name:</strong> Zenith Bank</p>
+                    <p><strong>Account Name:</strong> GENIUS POINT ACADEMY</p>
+                    <p><strong>Account Number:</strong> 1234567890</p>
+                    <p><strong>Amount to Transfer:</strong> <span id="transferAmount">₦0</span></p>
+                    <p><strong>Important:</strong> After transferring, send proof of payment to 08012345678 via WhatsApp with your name and GPA Code.</p>
+                </div>
+
+                <button id="payButton" class="btn-primary" onclick="processPayment()" disabled>Complete Payment</button>
+                <button class="btn-secondary" onclick="window.history.back()" style="width: 100%; margin-top: 10px; padding: 10px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer;">Go Back</button>
+            </div>
+        </main>
+    </div>
+    <script src="payment.js"></script>
+</body>
+</html>

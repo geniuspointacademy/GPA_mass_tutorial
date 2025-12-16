@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genius Point Academy - Mass Tutorials Registration</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Add Flutterwave payment script -->
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <h1>Genius Point Academy</h1>
+                <p>Mass Tutorials Registration</p>
+            </div>
+        </header>
+
+        <main>
+            <div class="registration-form">
+                <h2>Register for Mass Tutorials</h2>
+                <p class="price-info">₦200 per course</p>
+                
+                <form id="registrationForm">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="department">Department *</label>
+                        <input type="text" id="department" name="department" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="matricNumber">Matric Number *</label>
+                        <input type="text" id="matricNumber" name="matricNumber" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="courseCount">How many courses are you registering for? *</label>
+                        <select id="courseCount" name="courseCount" required>
+                            <option value="">Select number of courses</option>
+                            <option value="1">1 Course (₦200)</option>
+                            <option value="2">2 Courses (₦400)</option>
+                            <option value="3">3 Courses (₦600)</option>
+                            <option value="4">4 Courses (₦800)</option>
+                            <option value="5">5 Courses (₦1,000)</option>
+                        </select>
+                    </div>
+
+                    <div id="courseSelection" class="course-selection">
+                        <!-- Dynamic course selection will appear here -->
+                    </div>
+
+                    <div class="amount-display">
+                        <h3>Total Amount: <span id="totalAmount">₦0</span></h3>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Proceed to Payment</button>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
