@@ -26,32 +26,34 @@
 
                 <h3>Select Payment Method</h3>
                 <div class="payment-methods">
-                    <div class="payment-method selected" onclick="selectPaymentMethod('flutterwave')">
-                        <div style="font-size: 2em; color: #F5A623;">₦</div>
-                        <h4>Online Payment 1</h4>
-                        <p>Card/Transfer/USSD</p>
-                    </div>
-                </div>
-
-                <div id="paymentDetails">
-                    <div style="margin: 20px 0;">
-                        <h3>Online Payment 2</h3>
-                        <p>You will be redirected to a secure payment page to complete your transaction.</p>
-                        <p><strong>Accepted Methods:</strong> Card, Bank Transfer, USSD, Mobile Money</p>
-                        <div class="accepted-cards">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Verve_%28card%29.png" alt="Verve">
+    <!-- Online Payment 1 -->
+    <div class="payment-method" onclick="selectPaymentMethod('flutterwave1')" id="paymentMethod1">
+        <div class="payment-method-icon" style="color: #F5A623;">₦</div>
+        <h4>Online Payment 1</h4>
+        <p>Card/Transfer/USSD</p>
+        <div class="accepted-cards">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Verve_%28card%29.png" alt="Verve">
+        </div>
+    </div>
+    
+    <!-- Online Payment 2 -->
+    <div class="payment-method" onclick="selectPaymentMethod('flutterwave2')" id="paymentMethod2">
+        <div class="payment-method-icon" style="color: #27ae60;">₦</div>
+        <h4>Online Payment 2</h4>
+        <p>Card/Transfer/USSD</p>
+        <div class="accepted-cards">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" alt="Mastercard">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/4/40/Verve_%28card%29.png" alt="Verve">
+        </div>
+    </div>
 </div>
-                    </div>
-                </div>
-
-                <button id="payButton" class="btn-primary" onclick="processPayment()">Complete Payment</button>
-                <button class="btn-secondary" onclick="window.history.back()" style="width: 100%; margin-top: 10px; padding: 10px; background: #95a5a6; color: white; border: none; border-radius: 5px; cursor: pointer;">Go Back</button>
-            </div>
         </main>
     </div>
     <script src="payment.js"></script>
 </body>
 </html>
+
 
